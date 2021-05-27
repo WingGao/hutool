@@ -65,7 +65,7 @@ import cn.hutool.core.util.TypeUtil;
  * <p>
  * 在此类中，存放着默认转换器和自定义转换器，默认转换器是Hutool中预定义的一些转换器，自定义转换器存放用户自定的转换器。
  * </p>
- * 
+ *
  * @author Looly
  *
  */
@@ -85,7 +85,7 @@ public class ConverterRegistry implements Serializable{
 
 	/**
 	 * 获得单例的 {@link ConverterRegistry}
-	 * 
+	 *
 	 * @return {@link ConverterRegistry}
 	 */
 	public static ConverterRegistry getInstance() {
@@ -98,7 +98,7 @@ public class ConverterRegistry implements Serializable{
 
 	/**
 	 * 登记自定义转换器
-	 * 
+	 *
 	 * @param type 转换的目标类型
 	 * @param converterClass 转换器类，必须有默认构造方法
 	 * @return {@link ConverterRegistry}
@@ -109,7 +109,7 @@ public class ConverterRegistry implements Serializable{
 
 	/**
 	 * 登记自定义转换器
-	 * 
+	 *
 	 * @param type 转换的目标类型
 	 * @param converter 转换器
 	 * @return {@link ConverterRegistry}
@@ -128,9 +128,9 @@ public class ConverterRegistry implements Serializable{
 
 	/**
 	 * 获得转换器<br>
-	 * 
+	 *
 	 * @param <T> 转换的目标类型
-	 * 
+	 *
 	 * @param type 类型
 	 * @param isCustomFirst 是否自定义转换器优先
 	 * @return 转换器
@@ -153,7 +153,7 @@ public class ConverterRegistry implements Serializable{
 
 	/**
 	 * 获得默认转换器
-	 * 
+	 *
 	 * @param <T> 转换的目标类型（转换器转换到的类型）
 	 * @param type 类型
 	 * @return 转换器
@@ -165,9 +165,9 @@ public class ConverterRegistry implements Serializable{
 
 	/**
 	 * 获得自定义转换器
-	 * 
+	 *
 	 * @param <T> 转换的目标类型（转换器转换到的类型）
-	 * 
+	 *
 	 * @param type 类型
 	 * @return 转换器
 	 */
@@ -178,7 +178,7 @@ public class ConverterRegistry implements Serializable{
 
 	/**
 	 * 转换值为指定类型
-	 * 
+	 *
 	 * @param <T> 转换的目标类型（转换器转换到的类型）
 	 * @param type 类型目标
 	 * @param value 被转换值
@@ -199,11 +199,11 @@ public class ConverterRegistry implements Serializable{
 		if (TypeUtil.isUnknow(type)) {
 			type = defaultValue.getClass();
 		}
-		
+
 		if(type instanceof TypeReference) {
 			type = ((TypeReference<?>)type).getType();
 		}
-		
+
 		// 标准转换器
 		final Converter<T> converter = getConverter(type, isCustomFirst);
 		if (null != converter) {
@@ -219,18 +219,18 @@ public class ConverterRegistry implements Serializable{
 				return (T) value;
 			}
 		}
-		
+
 		// 特殊类型转换，包括Collection、Map、强转、Array等
 		final T result = convertSpecial(type, rowType, value, defaultValue);
 		if (null != result) {
 			return result;
 		}
-		
+
 		// 尝试转Bean
 		if (BeanUtil.isBean(rowType)) {
 			return new BeanConverter<T>(type).convert(value, defaultValue);
 		}
-		
+
 		// 无法转换
 		throw new ConvertException("No Converter for type [{}]", rowType.getName());
 	}
@@ -238,7 +238,7 @@ public class ConverterRegistry implements Serializable{
 	/**
 	 * 转换值为指定类型<br>
 	 * 自定义转换器优先
-	 * 
+	 *
 	 * @param <T> 转换的目标类型（转换器转换到的类型）
 	 * @param type 类型
 	 * @param value 值
@@ -252,7 +252,7 @@ public class ConverterRegistry implements Serializable{
 
 	/**
 	 * 转换值为指定类型
-	 * 
+	 *
 	 * @param <T> 转换的目标类型（转换器转换到的类型）
 	 * @param type 类型
 	 * @param value 值
@@ -267,14 +267,14 @@ public class ConverterRegistry implements Serializable{
 	/**
 	 * 特殊类型转换<br>
 	 * 包括：
-	 * 
+	 *
 	 * <pre>
 	 * Collection
 	 * Map
 	 * 强转（无需转换）
 	 * 数组
 	 * </pre>
-	 * 
+	 *
 	 * @param <T> 转换的目标类型（转换器转换到的类型）
 	 * @param type 类型
 	 * @param value 值
@@ -325,7 +325,7 @@ public class ConverterRegistry implements Serializable{
 
 	/**
 	 * 注册默认转换器
-	 * 
+	 *
 	 * @return 转换器
 	 */
 	private ConverterRegistry defaultConverter() {
@@ -381,7 +381,6 @@ public class ConverterRegistry implements Serializable{
 		defaultConverterMap.put(TimeZone.class, new TimeZoneConverter());
 		defaultConverterMap.put(Locale.class, new LocaleConverter());
 		defaultConverterMap.put(Charset.class, new CharsetConverter());
-		defaultConverterMap.put(Path.class, new PathConverter());
 		defaultConverterMap.put(Currency.class, new CurrencyConverter());// since 3.0.8
 		defaultConverterMap.put(UUID.class, new UUIDConverter());// since 4.0.10
 		defaultConverterMap.put(StackTraceElement.class, new StackTraceElementConverter());// since 4.5.2
@@ -393,6 +392,8 @@ public class ConverterRegistry implements Serializable{
 				clazz = ClassUtil.loadClass(className);
 				defaultConverterMap.put(clazz, new Jdk8DateConverter(clazz));// since 4.5.1
 			}
+			// JDK7+
+			defaultConverterMap.put(Path.class, new PathConverter());
 		} catch (Exception e) {
 			// ignore
 			// 在使用jdk8以下版本时，其转换器自动跳过失效
