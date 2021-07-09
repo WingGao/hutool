@@ -199,31 +199,31 @@ public class FileUtil {
 	 * @return 文件列表
 	 * @since 4.6.3
 	 */
-	public static List<File> loopFiles(File file, int maxDepth, final FileFilter fileFilter) {
-		final List<File> fileList = new ArrayList<>();
-		if (null == file || false == file.exists()) {
-			return fileList;
-		} else if (false == file.isDirectory()) {
-			if (null == fileFilter || fileFilter.accept(file)) {
-				fileList.add(file);
-			}
-			return fileList;
-		}
-
-		walkFiles(file.toPath(), maxDepth, new SimpleFileVisitor<Path>() {
-
-			@Override
-			public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) {
-				final File file = path.toFile();
-				if (null == fileFilter || fileFilter.accept(file)) {
-					fileList.add(file);
-				}
-				return FileVisitResult.CONTINUE;
-			}
-		});
-
-		return fileList;
-	}
+//	public static List<File> loopFiles(File file, int maxDepth, final FileFilter fileFilter) {
+//		final List<File> fileList = new ArrayList<>();
+//		if (null == file || false == file.exists()) {
+//			return fileList;
+//		} else if (false == file.isDirectory()) {
+//			if (null == fileFilter || fileFilter.accept(file)) {
+//				fileList.add(file);
+//			}
+//			return fileList;
+//		}
+//
+//		walkFiles(file.toPath(), maxDepth, new SimpleFileVisitor<Path>() {
+//
+//			@Override
+//			public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) {
+//				final File file = path.toFile();
+//				if (null == fileFilter || fileFilter.accept(file)) {
+//					fileList.add(file);
+//				}
+//				return FileVisitResult.CONTINUE;
+//			}
+//		});
+//
+//		return fileList;
+//	}
 
 	/**
 	 * 遍历指定path下的文件并做处理
@@ -747,24 +747,25 @@ public class FileUtil {
 
 		try {
 			if (Files.isDirectory(path)) {
-				Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
-
-					@Override
-					public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-						Files.delete(file);
-						return FileVisitResult.CONTINUE;
-					}
-
-					@Override
-					public FileVisitResult postVisitDirectory(Path dir, IOException e) throws IOException {
-						if (e == null) {
-							Files.delete(dir);
-							return FileVisitResult.CONTINUE;
-						} else {
-							throw e;
-						}
-					}
-				});
+				throw new IORuntimeException("TODO 支持isDirectory");
+//				Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
+//
+//					@Override
+//					public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+//						Files.delete(file);
+//						return FileVisitResult.CONTINUE;
+//					}
+//
+//					@Override
+//					public FileVisitResult postVisitDirectory(Path dir, IOException e) throws IOException {
+//						if (e == null) {
+//							Files.delete(dir);
+//							return FileVisitResult.CONTINUE;
+//						} else {
+//							throw e;
+//						}
+//					}
+//				});
 			} else {
 				Files.delete(path);
 			}
