@@ -199,8 +199,9 @@ public class FileUtil {
 	 * @return 文件列表
 	 * @since 4.6.3
 	 */
-//	public static List<File> loopFiles(File file, int maxDepth, final FileFilter fileFilter) {
-//		final List<File> fileList = new ArrayList<>();
+	public static List<File> loopFiles(File file, int maxDepth, final FileFilter fileFilter) {
+		final List<File> fileList = new ArrayList<>();
+		//fixme
 //		if (null == file || false == file.exists()) {
 //			return fileList;
 //		} else if (false == file.isDirectory()) {
@@ -221,9 +222,9 @@ public class FileUtil {
 //				return FileVisitResult.CONTINUE;
 //			}
 //		});
-//
-//		return fileList;
-//	}
+
+		return fileList;
+	}
 
 	/**
 	 * 遍历指定path下的文件并做处理

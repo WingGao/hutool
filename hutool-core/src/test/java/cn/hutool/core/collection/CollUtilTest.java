@@ -27,7 +27,7 @@ import cn.hutool.core.map.MapUtil;
 
 /**
  * 集合工具类单元测试
- * 
+ *
  * @author looly
  *
  */
@@ -229,7 +229,7 @@ public class CollUtilTest {
 		Assert.assertTrue(list == filtered);
 		Assert.assertEquals(CollUtil.newArrayList("b", "c"), filtered);
 	}
-	
+
 	@Test
 	public void removeNullTest() {
 		ArrayList<String> list = CollUtil.newArrayList("a", "b", "c", null, "", "  ");
@@ -240,7 +240,7 @@ public class CollUtilTest {
 		Assert.assertTrue(list == filtered);
 		Assert.assertEquals(CollUtil.newArrayList("a", "b", "c", "", "  "), filtered);
 	}
-	
+
 	@Test
 	public void removeEmptyTest() {
 		ArrayList<String> list = CollUtil.newArrayList("a", "b", "c", null, "", "  ");
@@ -251,13 +251,13 @@ public class CollUtilTest {
 		Assert.assertTrue(list == filtered);
 		Assert.assertEquals(CollUtil.newArrayList("a", "b", "c", "  "), filtered);
 	}
-	
+
 	@Test
 	public void removeBlankTest() {
 		ArrayList<String> list = CollUtil.newArrayList("a", "b", "c", null, "", "  ");
-		
+
 		ArrayList<String> filtered = CollUtil.removeBlank(list);
-		
+
 		// 原地过滤
 		Assert.assertTrue(list == filtered);
 		Assert.assertEquals(CollUtil.newArrayList("a", "b", "c"), filtered);
@@ -510,7 +510,8 @@ public class CollUtilTest {
 		final int step = 2;
 
 		// Act
-		thrown.expect(ArrayIndexOutOfBoundsException.class);
+//		thrown.expect(ArrayIndexOutOfBoundsException.class);
+		thrown.expect(IndexOutOfBoundsException.class);
 		CollUtil.sub(list, start, end, step);
 		// Method is not expected to return due to exception thrown
 	}
